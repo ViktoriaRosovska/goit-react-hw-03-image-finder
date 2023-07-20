@@ -5,8 +5,10 @@ import { Searchbar } from './Searchbar/Searchbar';
 import * as APIservices from '../APIservices/APIservices';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
 import { Button } from './Button/Button';
 import { Modal } from './Modal/Modal';
+import { Loader } from './Loader/Loader';
 
 export class App extends Component {
   state = {
@@ -18,9 +20,13 @@ export class App extends Component {
     error: null,
     IsShowModal: false,
     showImage: null,
+    isShowLoadMore: false,
   };
 
   componentDidUpdate(_, prevState) {
+    if (prevState.query !== this.state.query) {
+      this.setState({ page: 1 });
+    }
     if (
       prevState.query !== this.state.query ||
       prevState.page !== this.state.page
@@ -32,13 +38,22 @@ export class App extends Component {
   async getImage() {
     const { query, page } = this.state;
     try {
-      this.setState({ IsError: false });
-      this.setState({ Isloading: true });
+      this.setState({
+        IsError: false,
+        Isloading: true,
+        images: [],
+        isShowLoadMore: false,
+      });
       const data = await APIservices.fetchImage(query, page);
 
-      const { total, hits } = data;
+      const { totalHits, hits } = data;
+      if (totalHits === 0) {
+        toast.error(`There are no images with query "${this.state.query}"`);
+      }
+
       this.setState(prevState => ({
         images: [...prevState.images, ...hits],
+        isShowLoadMore: page < Math.ceil(totalHits / 12),
       }));
     } catch (error) {
       this.setState({ error: error.message, IsError: true });
@@ -68,16 +83,14 @@ export class App extends Component {
   };
 
   render() {
-    const { Isloading, images, IsError } = this.state;
+    const { Isloading, images, isShowLoadMore, IsShowModal, showImage } =
+      this.state;
     const hasImages = images.length > 0;
 
     return (
       <div>
         <Searchbar onSubmit={this.setQuery} />
-        {Isloading && <h1>Загружаю...</h1>}
-        {!hasImages && <h2>Введите запрос</h2>}
-
-        {IsError && <h2>There are no images with query {this.state.query}</h2>}
+        {Isloading && <Loader />}
         {hasImages && (
           <ImageGallery images={images} onHandleImage={this.onHandleImage} />
         )}
@@ -88,12 +101,9 @@ export class App extends Component {
           hideProgressBar={true}
           theme="colored"
         />
-        {hasImages && <Button onLoadMore={this.onLoadMore} />}
-        {this.state.IsShowModal && (
-          <Modal
-            image={this.state.showImage}
-            onCloseModal={this.onCloseModal}
-          />
+        {isShowLoadMore && <Button onLoadMore={this.onLoadMore} />}
+        {IsShowModal && (
+          <Modal image={showImage} onCloseModal={this.onCloseModal} />
         )}
       </div>
     );

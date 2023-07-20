@@ -2,6 +2,7 @@ import { Component } from 'react';
 import css from './Searchbar.module.css';
 import SearchIcon from '@mui/icons-material/Search';
 import { toast } from 'react-toastify';
+import PropTypes from 'prop-types';
 
 class Searchbar extends Component {
   state = {
@@ -14,7 +15,7 @@ class Searchbar extends Component {
     e.preventDefault();
 
     if (this.state.query === '') {
-      return toast.error('Введите запрос');
+      return toast.error('Please, enter a query and try again');
     }
     this.props.onSubmit(this.state.query);
     this.setState({ query: '' });
@@ -46,5 +47,9 @@ class Searchbar extends Component {
     );
   }
 }
+
+Searchbar.propTypes = {
+  onSubmit: PropTypes.func.isRequired,
+};
 
 export { Searchbar };
