@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/goit-react-hw-03-image-finder/static/css/main.d9f19d95.css",
-    "main.js": "/goit-react-hw-03-image-finder/static/js/main.d8fe96a9.js",
+    "main.css": "/goit-react-hw-03-image-finder/static/css/main.7b514cfd.css",
+    "main.js": "/goit-react-hw-03-image-finder/static/js/main.62871ea9.js",
     "index.html": "/goit-react-hw-03-image-finder/index.html",
-    "main.d9f19d95.css.map": "/goit-react-hw-03-image-finder/static/css/main.d9f19d95.css.map",
-    "main.d8fe96a9.js.map": "/goit-react-hw-03-image-finder/static/js/main.d8fe96a9.js.map"
+    "main.7b514cfd.css.map": "/goit-react-hw-03-image-finder/static/css/main.7b514cfd.css.map",
+    "main.62871ea9.js.map": "/goit-react-hw-03-image-finder/static/js/main.62871ea9.js.map"
   },
   "entrypoints": [
-    "static/css/main.d9f19d95.css",
-    "static/js/main.d8fe96a9.js"
+    "static/css/main.7b514cfd.css",
+    "static/js/main.62871ea9.js"
   ]
 }
