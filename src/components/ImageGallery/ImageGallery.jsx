@@ -1,14 +1,20 @@
 import { ImageGalleryItem } from 'components/ImageGalleryItem/ImageGalleryItem';
-import { Component } from 'react';
+import css from './ImageGallery.module.css';
 
-export class ImageGallery extends Component {
-  render() {
-    return (
-      <div>
-        <ImageGalleryItem />
-        <ImageGalleryItem />
-        <ImageGalleryItem />
-      </div>
-    );
-  }
+function ImageGallery({ images, onHandleImage }) {
+  return (
+    <ul className={css.ImageGallery}>
+      {images.map(image => {
+        return (
+          <ImageGalleryItem
+            key={image.id}
+            image={image}
+            onHandleImage={onHandleImage}
+          />
+        );
+      })}
+    </ul>
+  );
 }
+
+export { ImageGallery };

@@ -1,6 +1,50 @@
+import { Component } from 'react';
 import css from './Searchbar.module.css';
-function Searchbar({ children }) {
-  return <div className={css.Searchbar}>{children}</div>;
+import SearchIcon from '@mui/icons-material/Search';
+import { toast } from 'react-toastify';
+
+class Searchbar extends Component {
+  state = {
+    query: '',
+  };
+  handleOnChange = e => {
+    this.setState({ query: e.currentTarget.value.trim().toLowerCase() });
+  };
+  onSubmit = e => {
+    e.preventDefault();
+
+    if (this.state.query === '') {
+      return toast.error('Введите запрос');
+    }
+    this.props.onSubmit(this.state.query);
+    this.setState({ query: '' });
+    e.target.reset();
+  };
+
+  render() {
+    return (
+      <header className={css.Searchbar}>
+        <form className={css.SearchForm} onSubmit={this.onSubmit}>
+          <input
+            onChange={this.handleOnChange}
+            className={css.SearchFormInput}
+            type="text"
+            autoComplete="off"
+            autoFocus
+            placeholder="Search images and photos"
+            name="search"
+          />
+          <button
+            type="submit"
+            className={css.SearchFormButton}
+            aria-label="Search"
+          >
+            <SearchIcon />
+          </button>
+        </form>
+      </header>
+    );
+  }
 }
 
 export { Searchbar };
