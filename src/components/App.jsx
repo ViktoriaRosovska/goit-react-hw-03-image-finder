@@ -75,10 +75,8 @@ export class App extends Component {
     }));
   };
 
-  onCloseModal = e => {
-    if (e.target === e.currentTarget || e.code === 'Escape') {
-      this.setState({ IsShowModal: false });
-    }
+  onCloseModal = () => {
+    this.setState({ IsShowModal: false });
   };
 
   render() {

@@ -4,21 +4,30 @@ import PropTypes from 'prop-types';
 
 export class Modal extends Component {
   componentDidMount() {
-    window.addEventListener('keydown', this.props.onCloseModal);
+    window.addEventListener('keydown', this.onEsc);
   }
 
   componentWillUnmount() {
-    window.removeEventListener('keydown', this.props.onCloseModal);
+    window.removeEventListener('keydown', this.onEsc);
   }
 
+  onEsc = e => {
+    if (e.code === 'Escape') {
+      this.props.onCloseModal();
+    }
+  };
+
+  onClose = e => {
+    if (e.target === e.currentTarget) {
+      this.props.onCloseModal();
+    }
+  };
+
   render() {
-    const {
-      image: { largeImageURL, tags },
-      onCloseModal,
-    } = this.props;
+    const { largeImageURL, tags } = this.props.image;
 
     return (
-      <div className={css.Overlay} onClick={onCloseModal}>
+      <div className={css.Overlay} onClick={this.onClose}>
         <div className={css.Modal}>
           <img src={largeImageURL} alt={tags} />
         </div>
