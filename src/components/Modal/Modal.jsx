@@ -4,18 +4,12 @@ import PropTypes from 'prop-types';
 
 export class Modal extends Component {
   componentDidMount() {
-    window.addEventListener('keydown', this.onEsc);
+    window.addEventListener('keydown', this.props.onCloseModal);
   }
 
   componentWillUnmount() {
-    window.removeEventListener('keydown', this.onEsc);
+    window.removeEventListener('keydown', this.props.onCloseModal);
   }
-
-  onEsc = e => {
-    if (e.code === 'Escape') {
-      this.props.onCloseModal();
-    }
-  };
 
   render() {
     const {

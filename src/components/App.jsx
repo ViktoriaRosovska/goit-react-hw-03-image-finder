@@ -24,9 +24,6 @@ export class App extends Component {
   };
 
   componentDidUpdate(_, prevState) {
-    if (prevState.query !== this.state.query) {
-      this.setState({ page: 1 });
-    }
     if (
       prevState.query !== this.state.query ||
       prevState.page !== this.state.page
@@ -38,17 +35,11 @@ export class App extends Component {
   async getImage() {
     const { query, page } = this.state;
     try {
-      this.setState({
-        IsError: false,
-        Isloading: true,
-        images: [],
-        isShowLoadMore: false,
-      });
-      const data = await APIservices.fetchImage(query, page);
-
-      const { totalHits, hits } = data;
+      const { totalHits, hits } = await APIservices.fetchImage(query, page);
       if (totalHits === 0) {
-        toast.error(`There are no images with query "${this.state.query}"`);
+        return toast.error(
+          `There are no images with query "${this.state.query}"`
+        );
       }
 
       this.setState(prevState => ({
@@ -67,19 +58,27 @@ export class App extends Component {
   };
 
   setQuery = value => {
-    this.setState({ query: value });
+    this.setState({
+      query: value,
+      page: 1,
+      IsError: false,
+      Isloading: true,
+      images: [],
+      isShowLoadMore: false,
+    });
   };
 
   onHandleImage = image => {
-    this.setState();
     this.setState(state => ({
       IsShowModal: !state.IsShowModal,
       showImage: image,
     }));
   };
 
-  onCloseModal = () => {
-    this.setState({ IsShowModal: false });
+  onCloseModal = e => {
+    if (e.target === e.currentTarget || e.code === 'Escape') {
+      this.setState({ IsShowModal: false });
+    }
   };
 
   render() {
